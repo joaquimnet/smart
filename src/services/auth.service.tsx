@@ -34,7 +34,8 @@ export const fetchNewAccessToken = (auth: any, dispatch: any) => {
       dispatch({ type: UPDATE_ACCESS_TOKEN, payload: res.data.token });
     })
     .catch((err) => {
-      if (err.response.status === 403 || err.response.status === 401) {
+      console.error(err.response?.data ?? err);
+      if (err.response && (err.response.status === 403 || err.response.status === 401)) {
         dispatch({ type: LOGOUT });
       }
     });
