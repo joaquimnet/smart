@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { createStyles, Theme, withStyles, WithStyles, makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -12,6 +12,8 @@ import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { TextArea } from '../../components/textarea/TextArea';
+import { Input } from '@material-ui/core';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -79,6 +81,32 @@ interface Props {
 
 export const ProjectEditorModal: React.FC<Props> = ({ isOpen, close, project }) => {
   const classes = useStyles();
+  const [projectForm, setProjectForm] = useState<{
+    specific: string;
+    measurable: string;
+    achievable: string;
+    realistic: string;
+    time: string;
+  }>({
+    specific: '',
+    measurable: '',
+    achievable: '',
+    realistic: '',
+    time: '',
+  });
+  const [connectionsForm, setConnectionsForm] = useState<{
+    epics: string;
+    projects: string;
+    notes: string;
+    todos: string;
+  }>({
+    epics: '',
+    projects: '',
+    notes: '',
+    todos: '',
+  });
+  const [step, setStep] = useState<'project' | 'connections'>('project');
+
   return (
     <Dialog
       onClose={close}
@@ -91,49 +119,90 @@ export const ProjectEditorModal: React.FC<Props> = ({ isOpen, close, project }) 
         {project?.title ?? 'Create a Project'}
       </DialogTitle>
       <DialogContent dividers>
-        <div className={classes.accRoot}>
+        {step === 'project' && (
+          <div className={classes.accRoot}>
+            <Accordion>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography className={classes.heading}>SPECIFIC</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <TextArea
+                  value={projectForm.specific}
+                  onChange={(e) => setProjectForm((s) => ({ ...s, specific: e.target.value }))}
+                />
+              </AccordionDetails>
+            </Accordion>
+            <Accordion>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography className={classes.heading}>MEASURABLE</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <TextArea
+                  value={projectForm.measurable}
+                  onChange={(e) => setProjectForm((s) => ({ ...s, measurable: e.target.value }))}
+                />
+              </AccordionDetails>
+            </Accordion>
+            <Accordion>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography className={classes.heading}>ACHIEVABLE</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <TextArea
+                  value={projectForm.achievable}
+                  onChange={(e) => setProjectForm((s) => ({ ...s, achievable: e.target.value }))}
+                />
+              </AccordionDetails>
+            </Accordion>
+            <Accordion>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography className={classes.heading}>REALISTIC</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <TextArea
+                  value={projectForm.realistic}
+                  onChange={(e) => setProjectForm((s) => ({ ...s, realistic: e.target.value }))}
+                />
+              </AccordionDetails>
+            </Accordion>
+            <Accordion>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography className={classes.heading}>TIMELY</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <TextArea
+                  value={projectForm.time}
+                  onChange={(e) => setProjectForm((s) => ({ ...s, time: e.target.value }))}
+                />
+              </AccordionDetails>
+            </Accordion>
+          </div>
+        )}
+        {step === 'connections' && (
           <Accordion>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls='panel1a-content'
-              id='panel1a-header'
-            >
-              <Typography className={classes.heading}>Accordion 1</Typography>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography className={classes.heading}>EPICS</Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <Typography>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus
-                ex, sit amet blandit leo lobortis eget.
-              </Typography>
+              <Input
+                value={connectionsForm.epics}
+                onChange={(e) => setConnectionsForm((s) => ({ ...s, epics: e.target.value }))}
+              />
             </AccordionDetails>
           </Accordion>
-          <Accordion>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls='panel2a-content'
-              id='panel2a-header'
-            >
-              <Typography className={classes.heading}>Accordion 2</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Typography>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus
-                ex, sit amet blandit leo lobortis eget.
-              </Typography>
-            </AccordionDetails>
-          </Accordion>
-          <Accordion disabled>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls='panel3a-content'
-              id='panel3a-header'
-            >
-              <Typography className={classes.heading}>Disabled Accordion</Typography>
-            </AccordionSummary>
-          </Accordion>
-        </div>
+        )}
       </DialogContent>
       <DialogActions>
+        {step === 'connections' && (
+          <Button onClick={() => setStep('project')} color='secondary' variant='contained'>
+            Edit Project
+          </Button>
+        )}
+        {step === 'project' && (
+          <Button onClick={() => setStep('connections')} color='secondary' variant='contained'>
+            Connections
+          </Button>
+        )}
         <Button onClick={close} color='primary' variant='contained'>
           Create
         </Button>
