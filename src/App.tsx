@@ -8,8 +8,8 @@ import { Login } from './auth/Login';
 import { Logout } from './auth/Logout';
 import { Dashboard } from './dashboard/Dashboard';
 import { RequireAuth } from './auth/RequireAuth';
-import { ProjectList } from './dashboard/project/ProjectList';
 import { ProjectRead } from './dashboard/project/ProjectRead';
+import { Home } from './home/Home';
 
 export const App: React.FC = () => {
   return (
@@ -18,14 +18,12 @@ export const App: React.FC = () => {
       <UserFetcher />
       <Navbar />
       <Switch>
+        <Route path='/' exact>
+          <Home />
+        </Route>
         <Route path='/dashboard' exact>
           <RequireAuth>
             <Dashboard />
-          </RequireAuth>
-        </Route>
-        <Route path='/dashboard/projects' exact>
-          <RequireAuth>
-            <ProjectList />
           </RequireAuth>
         </Route>
         <Route path='/dashboard/projects/:id' exact>

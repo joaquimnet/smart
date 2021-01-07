@@ -3,6 +3,12 @@ import axios from 'axios';
 import { BACKEND_URL } from '../config';
 // import { LOAD_USER, LOGOUT, UPDATE_ACCESS_TOKEN, LOGIN } from '../reducers/actions';
 
+export interface IProject {
+  _id: string;
+  title: string;
+  tags: string[];
+}
+
 export const fetchProjects = async (key: string, auth: any, dispatch?: any) => {
   if (!auth.tokens.access) return;
   let res;

@@ -48,6 +48,7 @@ const useStyles = makeStyles((theme: Theme) =>
     todo: {
       borderLeft: '5px solid #9b850a',
     },
+    cardMargin: { marginBottom: theme.spacing(1) },
   }),
 );
 
@@ -136,7 +137,22 @@ export const ProjectRead: React.FC<Props> = () => {
           </Grid>
         </Grid>
         <Grid item xs={4}>
-          <Card>
+          <Card className={classes.cardMargin}>
+            <CardContent>
+              <Typography variant='h5' component='h2'>
+                Stretch
+              </Typography>
+              <Typography variant='body2' component='div'>
+                    <Markdown>{project.stretch}</Markdown>
+                  </Typography>
+            </CardContent>
+            {/* <CardActions>
+              <Button size='small' onClick={() => console.log(project)}>
+                Learn More
+              </Button>
+            </CardActions> */}
+          </Card>
+          <Card className={classes.cardMargin}>
             <CardContent>
               <Typography variant='h5' component='h2'>
                 Connections
